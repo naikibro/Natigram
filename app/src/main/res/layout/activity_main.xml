@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
@@ -9,28 +9,31 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:background="@drawable/item_list"
     tools:context=".MainActivity">
+
+
+
 
     <ImageView
         android:id="@+id/logoInsta"
-        android:layout_width="188dp"
-        android:layout_height="139dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/insta_logo"
-        tools:ignore="MissingConstraints" />
+        android:layout_width="160dp"
+        android:layout_height="97dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="104dp"
+        android:src="@drawable/insta_logo"
+        android:contentDescription="@string/logo_text_placeholder" />
 
 
     <ImageView
         android:id="@+id/logoTextInsta"
-        android:layout_width="252dp"
-        android:layout_height="113dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logoInsta"
-        app:srcCompat="@drawable/insta_logo_text"
-        tools:ignore="MissingConstraints" />
+        android:layout_width="217dp"
+        android:layout_height="83dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/insta_logo_text"
+        android:contentDescription="@string/logo_text_placeholder" />
 
     <Button
         android:id="@+id/loginButton"
@@ -38,11 +41,8 @@
         android:layout_height="wrap_content"
         android:text="@string/login_button_text"
         android:onClick="redirectToLogin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logoTextInsta"
-        android:layout_marginTop="160dp"
-        />
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="@color/primary_blue"
+        android:layout_marginTop="160dp" />
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

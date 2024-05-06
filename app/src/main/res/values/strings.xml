@@ -11,4 +11,5 @@
     <string name="login_failed">"Login failed"</string>
     <string name="natigram">Natigram</string>
     <string name="login_button_text">Login</string>
+    <string name="logo_text_placeholder">logo_text_placeholder</string>
 </resources>
