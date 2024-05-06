@@ -1,6 +1,7 @@
 package com.example.natigram.ui.login
 
 import android.app.Activity
+import android.graphics.drawable.AnimationDrawable
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Toast
 import com.example.natigram.databinding.ActivityLoginBinding
 
@@ -61,6 +63,16 @@ class LoginActivity : AppCompatActivity() {
             }
             setResult(Activity.RESULT_OK)
 
+            // Ensure the background of the LinearLayout is an AnimationDrawable
+            val linearLayout = findViewById<LinearLayout>(R.id.login_container)
+            val animationDrawable = linearLayout.background as? AnimationDrawable
+
+            animationDrawable?.apply {
+                setEnterFadeDuration(2500)
+                setExitFadeDuration(5000)
+                start()
+            }
+
             //Complete and destroy login activity once successful
             finish()
         })
@@ -94,6 +106,20 @@ class LoginActivity : AppCompatActivity() {
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
                 loginViewModel.login(username.text.toString(), password.text.toString())
+            }
+        }
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) {
+            val linearLayout = findViewById<LinearLayout>(R.id.login_container)
+            val animationDrawable = linearLayout.background as? AnimationDrawable
+
+            animationDrawable?.apply {
+                setEnterFadeDuration(2500)
+                setExitFadeDuration(5000)
+                start()
             }
         }
     }
