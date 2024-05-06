@@ -13,9 +13,6 @@
     android:background="@drawable/item_list"
     tools:context=".MainActivity">
 
-
-
-
     <ImageView
         android:id="@+id/logoInsta"
         android:layout_width="160dp"

@@ -22,7 +22,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/insta_logo"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:contentDescription="@string/logo_text_placeholder"/>
 
     <ImageView
         android:id="@+id/logoTextInsta"
@@ -33,34 +34,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logoInsta"
         app:srcCompat="@drawable/insta_logo_text"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:contentDescription="@string/logo_text_placeholder" />
 
     <EditText
         android:id="@+id/username"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
         android:layout_marginTop="164dp"
+        android:autofillHints=""
+        android:background="@drawable/rounded_edit_text"
+        android:padding="10dp"
         android:hint="@string/prompt_email"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
-        android:background="@color/input_background"
         android:textColorHint="@color/primary_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/logoTextInsta"
-        android:autofillHints="" />
+        app:layout_constraintTop_toTopOf="@+id/logoTextInsta" />
 
     <EditText
         android:id="@+id/password"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
         android:layout_marginTop="4dp"
         android:hint="@string/prompt_password"
         android:imeActionLabel="@string/action_sign_in_short"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
         android:selectAllOnFocus="true"
-        android:background="@color/input_background"
+        android:background="@drawable/rounded_edit_text"
+        android:padding="10dp"
         android:textColorHint="@color/primary_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,17 +73,17 @@
 
     <Button
         android:id="@+id/login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/action_sign_in"
-        android:backgroundTint="@color/primary_blue"
-        android:textColor="@color/white"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="64dp"
+        android:backgroundTint="@color/primary_blue"
+        android:text="@string/action_sign_in"
+        app:cornerRadius="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/password" />
 
     <ProgressBar
         android:id="@+id/loading"
