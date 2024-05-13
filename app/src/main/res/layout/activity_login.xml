@@ -52,7 +52,7 @@
             android:id="@+id/username"
             android:layout_width="320dp"
             android:layout_height="50dp"
-            android:layout_marginTop="164dp"
+            android:layout_marginTop="120dp"
             android:autofillHints=""
             android:background="@drawable/rounded_edit_text"
             android:padding="10dp"
@@ -86,16 +86,52 @@
             android:id="@+id/login"
             android:layout_width="320dp"
             android:layout_height="50dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="64dp"
             android:backgroundTint="@color/primary_blue"
             android:text="@string/action_sign_in"
             android:textColor="@color/white"
             app:cornerRadius="6dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/password" />
+
+        <TextView
+            android:id="@+id/login_helper_label"
+            android:layout_width="320dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/forgot_to_login_get_help_logging_in"
+            android:textColor="@color/secondary_text"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login"
+            />
+
+        <TextView
+            android:id="@+id/login_helper"
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            android:textColor="@color/primary_blue"
+            android:text="@string/login_with_google"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_helper_label"
+            />
+
+        <TextView
+            android:id="@+id/signup_helper"
+            android:layout_width="320dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/don_t_have_an_account_sign_up"
+            android:textColor="@color/secondary_text"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_helper"
+            />
 
         <ProgressBar
             android:id="@+id/loading"

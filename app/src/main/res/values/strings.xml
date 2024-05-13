@@ -13,4 +13,7 @@
     <string name="login_button_text">Login</string>
     <string name="logo_text_placeholder">logo_text_placeholder</string>
     <string name="natigram_welcome">natigram_welcome</string>
+    <string name="forgot_to_login_get_help_logging_in">Forgot to login ? Get help logging in or</string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="don_t_have_an_account_sign_up">Don\'t have an account ? Sign up</string>
 </resources>

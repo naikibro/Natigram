@@ -7,4 +7,6 @@
     <color name="input_border">#E2E2E2</color>
     <color name="primary_text">#777777</color>
     <color name="login_card">#FFFFFF</color>
+    <color name="secondary_text">#CCC</color>
+
 </resources>
