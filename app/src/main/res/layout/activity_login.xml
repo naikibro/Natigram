@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_container"
     android:layout_width="match_parent"
@@ -10,7 +11,7 @@
     tools:context=".ui.login.LoginActivity"
     >
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/login_card_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,16 +26,16 @@
 
         <ImageView
             android:id="@+id/logoInsta"
-            android:layout_width="160dp"
-            android:layout_height="97dp"
-            android:layout_marginTop="104dp"
+            android:layout_width="217dp"
+            android:layout_height="169dp"
+            android:layout_marginTop="50dp"
+            android:contentDescription="@string/logo_text_placeholder"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/insta_logo"
-            tools:ignore="MissingConstraints"
-            android:contentDescription="@string/logo_text_placeholder"/>
+            app:srcCompat="@drawable/logo_natigram"
+            tools:ignore="MissingConstraints" />
 
         <ImageView
             android:id="@+id/logoTextInsta"
@@ -44,7 +45,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/logoInsta"
-            app:srcCompat="@drawable/insta_logo_text"
+            app:srcCompat="@drawable/natigram_text"
             tools:ignore="MissingConstraints"
             android:contentDescription="@string/logo_text_placeholder" />
 

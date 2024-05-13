@@ -16,21 +16,22 @@
 
     <ImageView
         android:id="@+id/logoInsta"
-        android:layout_width="160dp"
-        android:layout_height="97dp"
+        android:layout_width="217dp"
+        android:layout_height="169dp"
+        android:layout_marginTop="50dp"
+        android:contentDescription="@string/logo_text_placeholder"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="104dp"
-        android:src="@drawable/insta_logo"
-        android:contentDescription="@string/logo_text_placeholder" />
-
+        app:srcCompat="@drawable/logo_natigram"
+        tools:ignore="MissingConstraints" />
 
     <ImageView
         android:id="@+id/logoTextInsta"
         android:layout_width="217dp"
         android:layout_height="83dp"
-        android:layout_gravity="center_horizontal"
         android:layout_marginTop="8dp"
-        android:src="@drawable/insta_logo_text"
+        android:layout_gravity="center_horizontal"
+        app:srcCompat="@drawable/natigram_text"
+        tools:ignore="MissingConstraints"
         android:contentDescription="@string/logo_text_placeholder" />
 
     <Button
