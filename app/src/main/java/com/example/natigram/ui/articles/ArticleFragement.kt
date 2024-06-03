@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.natigram.R
+import com.example.natigram.R.*
+import com.example.natigram.data.LoginDataSource
 
 private const val ARG_PARAM1 = "userId"
 private const val ARG_PARAM2 = "id"
@@ -36,13 +38,16 @@ class ArticleFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_article_fragement, container, false)
+        val view = inflater.inflate(layout.fragment_article_fragement, container, false)
 
-        val titleTextView: TextView = view.findViewById(R.id.article_title)
+        //val titleTextView: TextView = view.findViewById(R.id.article_title)
         val bodyTextView: TextView = view.findViewById(R.id.article_body)
+        val userIdTextView: TextView = view.findViewById(R.id.article_userId)
+        val displayName = LoginDataSource.getDisplayName(userId ?: "")
 
-        titleTextView.text = title
+        //titleTextView.text = title
         bodyTextView.text = body
+        userIdTextView.text = displayName ?: "Unknown User"
 
         return view
     }

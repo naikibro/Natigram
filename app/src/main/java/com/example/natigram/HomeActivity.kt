@@ -1,7 +1,6 @@
 package com.example.natigram
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -76,7 +75,7 @@ class HomeActivity : AppCompatActivity() {
                 if (response.isSuccessful && response.body() != null) {
                     val exampleData = response.body()
                     exampleData?.let {
-                        displayArticles(it.take(10)) // Limit to 10 articles
+                        displayArticles(it.take(50)) // Limit to 10 articles
                     }
                 } else {
                     Toast.makeText(this@HomeActivity, "Failed to fetch data", Toast.LENGTH_SHORT).show()
