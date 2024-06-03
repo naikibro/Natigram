@@ -1,6 +1,7 @@
 package com.example.natigram
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -14,18 +15,25 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.widget.ProgressBar
+import android.widget.ScrollView
 import android.widget.Toast
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var apiInterface: ApiInterface
+    private lateinit var progressBar: ProgressBar
+    private lateinit var homeScrollView: ScrollView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        progressBar = findViewById(R.id.progressBar)
+        homeScrollView = findViewById(R.id.home_scrollview)
 
         setupToolbar()
         setupBottomNavigation()
@@ -69,9 +77,12 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun getExampleData() {
+        homeScrollView.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
         val call = apiInterface.getExampleData()
         call.enqueue(object : Callback<List<ArticleDataResponse>> {
             override fun onResponse(call: Call<List<ArticleDataResponse>>, response: Response<List<ArticleDataResponse>>) {
+
                 if (response.isSuccessful && response.body() != null) {
                     val exampleData = response.body()
                     exampleData?.let {
@@ -80,9 +91,13 @@ class HomeActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this@HomeActivity, "Failed to fetch data", Toast.LENGTH_SHORT).show()
                 }
+                progressBar.visibility = View.GONE
+                homeScrollView.visibility = View.VISIBLE
             }
 
             override fun onFailure(call: Call<List<ArticleDataResponse>>, t: Throwable) {
+                progressBar.visibility = View.GONE
+                homeScrollView.visibility = View.VISIBLE
                 t.printStackTrace()
                 Toast.makeText(this@HomeActivity, "An error occurred: ${t.message}", Toast.LENGTH_LONG).show()
             }
@@ -102,6 +117,7 @@ class HomeActivity : AppCompatActivity() {
             addFragmentToLayout(fragment)
         }
     }
+
     private fun addFragmentToLayout(fragment: Fragment) {
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.article_container, fragment) // Use a container view to add fragments
