@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.example.natigram.data.model.ArticleDataResponse
+import com.example.natigram.data.model.articles.ArticleDataResponse
 import com.example.natigram.databinding.ActivityHomeBinding
 import com.example.natigram.fetch.ApiInterface
 import com.example.natigram.fetch.RetrofitInstance
@@ -91,17 +91,17 @@ class HomeActivity : AppCompatActivity() {
 
     private fun displayArticles(articles: List<ArticleDataResponse>) {
         for (article in articles) {
+            val uniqueImageUrl = "https://picsum.photos/200?random=${article.id}"
             val fragment = ArticleFragment.newInstance(
                 article.userId.toString(),
                 article.id.toString(),
                 article.title,
                 article.body,
-                "" // Assuming there's no image URL provided
+                uniqueImageUrl
             )
             addFragmentToLayout(fragment)
         }
     }
-
     private fun addFragmentToLayout(fragment: Fragment) {
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.article_container, fragment) // Use a container view to add fragments

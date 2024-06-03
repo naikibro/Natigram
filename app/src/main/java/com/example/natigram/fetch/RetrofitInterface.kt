@@ -1,6 +1,6 @@
 package com.example.natigram.fetch
 
-import com.example.natigram.data.model.ArticleDataResponse
+import com.example.natigram.data.model.articles.ArticleDataResponse
 import retrofit2.Call
 import retrofit2.http.GET
 

@@ -1,51 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    android:paddingBottom="24dp"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingBottom="16dp">
         <ImageView
+            android:id="@+id/article_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="fitCenter"
             android:adjustViewBounds="true"
             android:contentDescription="@string/generic_content_description"
             android:src="@drawable/logo_natigram" />
-
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/action_bar_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:name="com.example.natigram.ActionBarFragment"/>
-
-        <TextView
-            android:id="@+id/article_userId"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="User Name"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:layout_marginHorizontal="2dp"
+            android:paddingHorizontal="16dp"
+            >
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/action_bar_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:name="com.example.natigram.ActionBarFragment"/>
 
+            <TextView
+                android:id="@+id/article_userId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="User Name"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/article_body"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textSize="16sp"
-            android:text="Body"/>
-
-
-
+            <TextView
+                android:id="@+id/article_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                android:text="Body"/>
+        </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

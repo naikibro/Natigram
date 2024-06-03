@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.example.natigram.R
 import com.example.natigram.R.*
 import com.example.natigram.data.LoginDataSource
@@ -40,15 +42,19 @@ class ArticleFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(layout.fragment_article_fragement, container, false)
 
-        //val titleTextView: TextView = view.findViewById(R.id.article_title)
         val bodyTextView: TextView = view.findViewById(R.id.article_body)
         val userIdTextView: TextView = view.findViewById(R.id.article_userId)
         val displayName = LoginDataSource.getDisplayName(userId ?: "")
+        val imageView: ImageView = view.findViewById(R.id.article_image)
 
-        //titleTextView.text = title
         bodyTextView.text = body
         userIdTextView.text = displayName ?: "Unknown User"
 
+        image?.let {
+            Glide.with(this)
+                .load(it)
+                .into(imageView)
+        }
         return view
     }
 
