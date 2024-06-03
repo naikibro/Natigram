@@ -39,7 +39,6 @@ android {
 }
 
 dependencies {
-    val fragment_version = "1.7.0"
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -53,4 +52,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.retrofit)
+    implementation (libs.converter.gson)
+    implementation (libs.logging.interceptor)
+    implementation (libs.glide)
+    annotationProcessor (libs.compiler)
 }

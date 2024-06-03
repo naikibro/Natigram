@@ -44,121 +44,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp">
+            >
 
-            <!-- Post item -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/article_id"
+            <LinearLayout
+                android:id="@+id/article_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:scaleType="fitCenter"
-                        android:adjustViewBounds="true"
-                        android:contentDescription="@string/generic_content_description"
-                        android:src="@drawable/logo_natigram" />
-                    <androidx.fragment.app.FragmentContainerView
-                        android:id="@+id/action_bar_1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:name="com.example.natigram.ActionBarFragment"/>
-                    <TextView
-                        android:id="@+id/article_id_description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        android:text="@string/welcome_to_the_natigram"
-                        android:textSize="16sp"
-                        android:textStyle="normal" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <!-- Additional CardViews to simulate posts -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/article_id_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:scaleType="fitCenter"
-                        android:adjustViewBounds="true"
-                        android:contentDescription="@string/generic_content_description"
-                        android:src="@drawable/natigram" />
-                    <androidx.fragment.app.FragmentContainerView
-                        android:id="@+id/action_bar_2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:name="com.example.natigram.ActionBarFragment"/>
-                    <TextView
-                        android:id="@+id/article_id_description_2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        android:text="Another example post"
-                        android:textSize="16sp"
-                        android:textStyle="normal" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/article_id_3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:scaleType="fitCenter"
-                        android:adjustViewBounds="true"
-                        android:contentDescription="@string/generic_content_description"
-                        android:src="@drawable/rimai"/>
-
-                    <androidx.fragment.app.FragmentContainerView
-                        android:id="@+id/action_bar_3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:name="com.example.natigram.ActionBarFragment"/>
-
-                    <TextView
-                        android:id="@+id/article_id_description_3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        android:text="Yet another example post"
-                        android:textSize="16sp"
-                        android:textStyle="normal" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-            <!-- Add more CardViews as needed -->
-
+                android:orientation="vertical"
+                >
+                <!-- Fragments will be added here dynamically -->
+            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>

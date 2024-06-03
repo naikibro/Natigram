@@ -8,14 +8,19 @@ import java.io.IOException
  */
 class LoginDataSource {
 
-    // Static table of 5 valid users
-    private val users = listOf(
-        UserCredentials("naikibro@gmail.com", "naiki", LoggedInUser(java.util.UUID.randomUUID().toString(), "Naiki Brotherson")),
-        UserCredentials("fabrice@gmail.com", "fabrice", LoggedInUser(java.util.UUID.randomUUID().toString(), "Fabrice Tirolien")),
-        UserCredentials("jane@gmail.com", "jane", LoggedInUser(java.util.UUID.randomUUID().toString(), "Jane Doe")),
-        UserCredentials("john@gmail.com", "john", LoggedInUser(java.util.UUID.randomUUID().toString(), "John Doe")),
-        UserCredentials("linus@gmail.com", "linus", LoggedInUser(java.util.UUID.randomUUID().toString(), "Linus torvald"))
-    )
+    companion object {
+        private val users = listOf(
+            UserCredentials("naikibro@gmail.com", "naiki", LoggedInUser("1", "Naiki Brotherson")),
+            UserCredentials("fabrice@gmail.com", "fabrice", LoggedInUser("2", "Fabrice Tirolien")),
+            UserCredentials("jane@gmail.com", "jane", LoggedInUser("3", "Jane Doe")),
+            UserCredentials("john@gmail.com", "john", LoggedInUser("4", "John Doe")),
+            UserCredentials("linus@gmail.com", "linus", LoggedInUser("5", "Linus Torvald"))
+        )
+
+        fun getDisplayName(userId: String): String? {
+            return users.find { it.loggedInUser.userId == userId }?.loggedInUser?.displayName
+        }
+    }
 
     fun login(username: String, password: String): Result<LoggedInUser> {
         return try {
