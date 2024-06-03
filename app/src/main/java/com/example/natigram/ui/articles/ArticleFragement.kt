@@ -5,11 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.natigram.R
-import com.example.natigram.R.*
 import com.example.natigram.data.LoginDataSource
 
 private const val ARG_PARAM1 = "userId"
@@ -24,6 +24,8 @@ class ArticleFragment : Fragment() {
     private var title: String? = null
     private var body: String? = null
     private var image: String? = null
+
+    private var isDescriptionShort = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,14 +42,14 @@ class ArticleFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(layout.fragment_article_fragement, container, false)
+        val view = inflater.inflate(R.layout.fragment_article_fragement, container, false)
 
         val bodyTextView: TextView = view.findViewById(R.id.article_body)
         val userIdTextView: TextView = view.findViewById(R.id.article_userId)
         val displayName = LoginDataSource.getDisplayName(userId ?: "")
         val imageView: ImageView = view.findViewById(R.id.article_image)
+        val toggleButton: Button = view.findViewById(R.id.toggle_button)
 
-        bodyTextView.text = body
         userIdTextView.text = displayName ?: "Unknown User"
 
         image?.let {
@@ -55,6 +57,32 @@ class ArticleFragment : Fragment() {
                 .load(it)
                 .into(imageView)
         }
+
+        body?.let {
+            if (it.length > 90) {
+                bodyTextView.text = buildString {
+                    append(it.take(90))
+                    append(" ...")
+                }
+            } else {
+                bodyTextView.text = it
+            }
+
+            toggleButton.setOnClickListener {
+                if (isDescriptionShort) {
+                    bodyTextView.text = body
+                    toggleButton.text = "Show Less"
+                } else {
+                    bodyTextView.text = buildString {
+                        append(body?.take(90))
+                        append(" ...")
+                    }
+                    toggleButton.text = "Show More"
+                }
+                isDescriptionShort = !isDescriptionShort
+            }
+        }
+
         return view
     }
 
