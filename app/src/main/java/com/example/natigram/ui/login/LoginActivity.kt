@@ -1,6 +1,7 @@
 package com.example.natigram.ui.login
 
 import android.app.Activity
+import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +15,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
+import com.example.natigram.HomeActivity
 import com.example.natigram.databinding.ActivityLoginBinding
 
 import com.example.natigram.R
@@ -125,24 +127,20 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun updateUiWithUser(model: LoggedInUserView) {
-        val welcome = getString(R.string.welcome)
-        val displayName = model.displayName
-        // TODO : initiate successful logged in experience
-        Toast.makeText(
-            applicationContext,
-            "$welcome $displayName",
-            Toast.LENGTH_LONG
-        ).show()
+        val welcome = getString(R.string.welcome) + " " + model.displayName + " !"
+        Toast.makeText(applicationContext, welcome, Toast.LENGTH_LONG).show()
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
     }
 }
 
-/**
- * Extension function to simplify setting an afterTextChanged action to EditText components.
- */
+// Extension function to simplify setting afterTextChanged listener
 fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
     this.addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(editable: Editable?) {
@@ -150,7 +148,6 @@ fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
         }
 
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
     })
 }
