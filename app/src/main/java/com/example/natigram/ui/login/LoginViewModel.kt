@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import android.util.Patterns
 import com.example.natigram.data.LoginRepository
 import com.example.natigram.data.Result
-
 import com.example.natigram.R
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
@@ -23,7 +22,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
         if (result is Result.Success) {
             _loginResult.value =
-                LoginResult(success = LoggedInUserView(displayName = result.data.displayName))
+                LoginResult(success = LoggedInUserView(displayName = result.data.displayName, userId = result.data.userId))
         } else {
             _loginResult.value = LoginResult(error = R.string.login_failed)
         }

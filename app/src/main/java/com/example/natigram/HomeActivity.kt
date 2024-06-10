@@ -1,30 +1,29 @@
 package com.example.natigram
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ProgressBar
+import android.widget.ScrollView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.example.natigram.data.model.articles.ArticleDao
 import com.example.natigram.data.model.articles.ArticleDataResponse
 import com.example.natigram.databinding.ActivityHomeBinding
-import com.example.natigram.fetch.ApiInterface
-import com.example.natigram.fetch.RetrofitInstance
 import com.example.natigram.ui.articles.ArticleFragment
+import com.example.natigram.ui.articles.CreateArticleActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import android.widget.ProgressBar
-import android.widget.ScrollView
-import android.widget.Toast
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
-    private lateinit var apiInterface: ApiInterface
     private lateinit var progressBar: ProgressBar
     private lateinit var homeScrollView: ScrollView
+    private lateinit var articleDao: ArticleDao
+    private var userId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,13 +31,23 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        userId = intent.getStringExtra("USER_ID")
+
         progressBar = findViewById(R.id.progressBar)
         homeScrollView = findViewById(R.id.home_scrollview)
+        articleDao = ArticleDao(this)
 
         setupToolbar()
         setupBottomNavigation()
-        getApiInterface()
-        getExampleData()
+        displayStoredArticles()
+
+        // Uncomment to insert example data
+        //insertExampleData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        displayStoredArticles()
     }
 
     private fun setupToolbar() {
@@ -49,7 +58,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setupBottomNavigation() {
         val bottomNavigationView: BottomNavigationView = binding.bottomNavigation
-        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+        bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_home -> {
                     // Handle home action
@@ -60,7 +69,10 @@ class HomeActivity : AppCompatActivity() {
                     true
                 }
                 R.id.navigation_add -> {
-                    // Handle add action
+                    val intent = Intent(this, CreateArticleActivity::class.java).apply {
+                        putExtra("USER_ID", userId)
+                    }
+                    startActivity(intent)
                     true
                 }
                 R.id.navigation_profile -> {
@@ -72,47 +84,42 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun getApiInterface() {
-        apiInterface = RetrofitInstance.getInstance().create(ApiInterface::class.java)
+    private fun insertExampleData() {
+        articleDao.createArticle(1, 1, "Article 1", "Hello world!")
+        articleDao.createArticle(2, 2, "Article 2", "How are you?")
+        articleDao.createArticle(3, 3, "Article 3", "I'm fine thank you!")
     }
 
-    private fun getExampleData() {
+    private fun displayStoredArticles() {
         homeScrollView.visibility = View.GONE
         progressBar.visibility = View.VISIBLE
-        val call = apiInterface.getExampleData()
-        call.enqueue(object : Callback<List<ArticleDataResponse>> {
-            override fun onResponse(call: Call<List<ArticleDataResponse>>, response: Response<List<ArticleDataResponse>>) {
 
-                if (response.isSuccessful && response.body() != null) {
-                    val exampleData = response.body()
-                    exampleData?.let {
-                        displayArticles(it.take(50)) // Limit to 10 articles
-                    }
-                } else {
-                    Toast.makeText(this@HomeActivity, "Failed to fetch data", Toast.LENGTH_SHORT).show()
-                }
-                progressBar.visibility = View.GONE
-                homeScrollView.visibility = View.VISIBLE
-            }
+        val articles: List<ArticleDataResponse> = articleDao.getAllArticles()
+        if (articles.isNotEmpty()) {
+            displayArticles(articles)
+        } else {
+            Toast.makeText(this, "No articles found", Toast.LENGTH_SHORT).show()
+        }
 
-            override fun onFailure(call: Call<List<ArticleDataResponse>>, t: Throwable) {
-                progressBar.visibility = View.GONE
-                homeScrollView.visibility = View.VISIBLE
-                t.printStackTrace()
-                Toast.makeText(this@HomeActivity, "An error occurred: ${t.message}", Toast.LENGTH_LONG).show()
-            }
-        })
+        progressBar.visibility = View.GONE
+        homeScrollView.visibility = View.VISIBLE
     }
 
     private fun displayArticles(articles: List<ArticleDataResponse>) {
+        // Clear any existing fragments
+        supportFragmentManager.fragments.forEach { fragment ->
+            supportFragmentManager.beginTransaction().remove(fragment).commit()
+        }
+
         for (article in articles) {
             val uniqueImageUrl = "https://picsum.photos/200?random=${article.id}"
             val fragment = ArticleFragment.newInstance(
-                article.userId.toString(),
-                article.id.toString(),
-                article.title,
-                article.body,
-                uniqueImageUrl
+                userId = article.userId.toString(),
+                id = article.id.toString(),
+                title = article.title,
+                body = article.body,
+                image = uniqueImageUrl,
+                currentUserId = userId.toString()
             )
             addFragmentToLayout(fragment)
         }

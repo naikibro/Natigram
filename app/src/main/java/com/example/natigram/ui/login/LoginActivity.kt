@@ -17,7 +17,6 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import com.example.natigram.HomeActivity
 import com.example.natigram.databinding.ActivityLoginBinding
-
 import com.example.natigram.R
 
 class LoginActivity : AppCompatActivity() {
@@ -35,6 +34,7 @@ class LoginActivity : AppCompatActivity() {
         val password = binding.password
         val login = binding.login
         val loading = binding.loading
+        val autoLogin = binding.autoLogin
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
@@ -109,6 +109,12 @@ class LoginActivity : AppCompatActivity() {
                 loading.visibility = View.VISIBLE
                 loginViewModel.login(username.text.toString(), password.text.toString())
             }
+
+            autoLogin.setOnClickListener {
+                username.setText("naikibro@gmail.com")
+                password.setText("naiki")
+                login.performClick()
+            }
         }
     }
 
@@ -129,7 +135,9 @@ class LoginActivity : AppCompatActivity() {
     private fun updateUiWithUser(model: LoggedInUserView) {
         val welcome = getString(R.string.welcome) + " " + model.displayName + " !"
         Toast.makeText(applicationContext, welcome, Toast.LENGTH_LONG).show()
-        val intent = Intent(this, HomeActivity::class.java)
+        val intent = Intent(this, HomeActivity::class.java).apply {
+            putExtra("USER_ID", model.userId)  // Pass user ID
+        }
         startActivity(intent)
     }
 

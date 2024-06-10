@@ -49,6 +49,17 @@
             tools:ignore="MissingConstraints"
             android:contentDescription="@string/logo_text_placeholder" />
 
+        <Button
+            android:id="@+id/auto_login"
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/primary_blue"
+            android:text="Auto Login"
+            android:textColor="@color/white"
+            app:cornerRadius="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/logoTextInsta" />
         <EditText
             android:id="@+id/username"
             android:layout_width="320dp"
