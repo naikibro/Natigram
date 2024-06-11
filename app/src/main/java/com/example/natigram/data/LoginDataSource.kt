@@ -9,7 +9,7 @@ import java.io.IOException
 class LoginDataSource {
 
     companion object {
-        private val users = listOf(
+        private val users = mutableListOf(
             UserCredentials("naikibro@gmail.com", "naiki", LoggedInUser("1", "Naiki Brotherson")),
             UserCredentials("fabrice@gmail.com", "fabrice", LoggedInUser("2", "Fabrice Tirolien")),
             UserCredentials("jane@gmail.com", "jane", LoggedInUser("3", "Jane Doe")),
@@ -19,6 +19,12 @@ class LoginDataSource {
 
         fun getDisplayName(userId: String): String? {
             return users.find { it.loggedInUser.userId == userId }?.loggedInUser?.displayName
+        }
+
+        fun addGoogleUser(userId: String, displayName: String) {
+            if (users.none { it.loggedInUser.userId == userId }) {
+                users.add(UserCredentials("", "", LoggedInUser(userId, displayName)))
+            }
         }
     }
 

@@ -85,9 +85,9 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun insertExampleData() {
-        articleDao.createArticle(1, 1, "Article 1", "Hello world!")
-        articleDao.createArticle(2, 2, "Article 2", "How are you?")
-        articleDao.createArticle(3, 3, "Article 3", "I'm fine thank you!")
+        articleDao.createArticle("1", 1, "Article 1", "Hello world!")
+        articleDao.createArticle("2", 2, "Article 2", "How are you?")
+        articleDao.createArticle("3", 3, "Article 3", "I'm fine thank you!")
     }
 
     private fun displayStoredArticles() {
@@ -119,7 +119,7 @@ class HomeActivity : AppCompatActivity() {
                 title = article.title,
                 body = article.body,
                 image = uniqueImageUrl,
-                currentUserId = userId.toString()
+                currentUserId = userId!!
             )
             addFragmentToLayout(fragment)
         }

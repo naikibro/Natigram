@@ -1,8 +1,8 @@
-// CreateArticleActivity.kt
 package com.example.natigram.ui.articles
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -24,6 +24,8 @@ class CreateArticleActivity : AppCompatActivity() {
         articleDao = ArticleDao(this)
         userId = intent.getStringExtra("USER_ID")
 
+        Log.d("CreateArticleActivity", "Received userId: $userId")
+
         val bodyEditText: EditText = findViewById(R.id.editTextBody)
         val createButton: Button = findViewById(R.id.buttonCreatePost)
 
@@ -33,10 +35,9 @@ class CreateArticleActivity : AppCompatActivity() {
 
             if (title.isNotEmpty() && body.isNotEmpty() && userId != null) {
                 val newId = generateNewId()
-                articleDao.createArticle(userId!!.toInt(), newId, title, body)
+                articleDao.createArticle(userId!!, newId, title, body)
                 Toast.makeText(this, "Post created successfully!", Toast.LENGTH_SHORT).show()
                 redirectToHome()
-                finish() // Close the activity after creation
             } else {
                 Toast.makeText(this, "Please fill out all fields", Toast.LENGTH_SHORT).show()
             }
@@ -50,6 +51,7 @@ class CreateArticleActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
     private fun generateNewId(): Int {
         val articles: List<ArticleDataResponse> = articleDao.getAllArticles()
         return if (articles.isEmpty()) {

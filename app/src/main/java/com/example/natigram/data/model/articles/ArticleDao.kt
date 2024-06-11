@@ -9,7 +9,7 @@ class ArticleDao(context: Context) {
     private val dbHelper = ArticleDatabaseHelper(context)
     private val db = dbHelper.writableDatabase
 
-    fun createArticle(userId: Int, id: Int, title: String, body: String) {
+    fun createArticle(userId: String, id: Int, title: String, body: String) {
         val values = ContentValues().apply {
             put("userId", userId)
             put("id", id)
@@ -24,7 +24,7 @@ class ArticleDao(context: Context) {
         val cursor: Cursor = db.query("articles", null, null, null, null, null, null)
         with(cursor) {
             while (moveToNext()) {
-                val userId = getInt(getColumnIndexOrThrow("userId"))
+                val userId = getString(getColumnIndexOrThrow("userId"))
                 val id = getInt(getColumnIndexOrThrow("id"))
                 val title = getString(getColumnIndexOrThrow("title"))
                 val body = getString(getColumnIndexOrThrow("body"))
@@ -43,7 +43,7 @@ class ArticleDao(context: Context) {
         var article: ArticleDataResponse? = null
         with(cursor) {
             if (moveToFirst()) {
-                val userId = getInt(getColumnIndexOrThrow("userId"))
+                val userId = getString(getColumnIndexOrThrow("userId"))
                 val id = getInt(getColumnIndexOrThrow("id"))
                 val title = getString(getColumnIndexOrThrow("title"))
                 val body = getString(getColumnIndexOrThrow("body"))

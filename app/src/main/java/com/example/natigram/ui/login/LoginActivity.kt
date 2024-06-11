@@ -35,6 +35,7 @@ class LoginActivity : AppCompatActivity() {
         val login = binding.login
         val loading = binding.loading
         val autoLogin = binding.autoLogin
+        val loginHelper = binding.loginHelper
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
@@ -115,6 +116,11 @@ class LoginActivity : AppCompatActivity() {
                 password.setText("naiki")
                 login.performClick()
             }
+        }
+
+        loginHelper.setOnClickListener {
+            val intent = Intent(this, LoginBisActivity::class.java)
+            startActivity(intent)
         }
     }
 

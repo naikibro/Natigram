@@ -8,9 +8,17 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.natigram.databinding.ActivityLoginBinding
 import com.example.natigram.ui.login.LoginActivity
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -32,6 +40,9 @@ class MainActivity : AppCompatActivity() {
             setExitFadeDuration(5000)
             start()
         }
+
+        auth = Firebase.auth
+        //TODO: implement google login
     }
 
     fun redirectToLogin(view: View) {
