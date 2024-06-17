@@ -1,30 +1,36 @@
 package com.example.natigram
 
+import FirebaseArticleRepository
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import com.example.natigram.data.model.articles.ArticleDao
 import com.example.natigram.data.model.articles.ArticleDataResponse
 import com.example.natigram.databinding.ActivityHomeBinding
 import com.example.natigram.ui.articles.ArticleFragment
 import com.example.natigram.ui.articles.CreateArticleActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.natigram.data.listeners.ArticleDeleteListener
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), ArticleDeleteListener {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var progressBar: ProgressBar
     private lateinit var homeScrollView: ScrollView
     private lateinit var articleDao: ArticleDao
+    private lateinit var firebaseRepository: FirebaseArticleRepository
     private var userId: String? = null
-
+    private var articles: MutableList<ArticleDataResponse> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -33,21 +39,25 @@ class HomeActivity : AppCompatActivity() {
 
         userId = intent.getStringExtra("USER_ID")
 
+        if (userId == null) {
+            Toast.makeText(this, "User ID is missing", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
+
         progressBar = findViewById(R.id.progressBar)
         homeScrollView = findViewById(R.id.home_scrollview)
         articleDao = ArticleDao(this)
-
+        firebaseRepository = FirebaseArticleRepository(this)
         setupToolbar()
         setupBottomNavigation()
-        displayStoredArticles()
-
-        // Uncomment to insert example data
-        //insertExampleData()
+        //setupArticlesListener()
+        hideSystemBars()
     }
 
     override fun onResume() {
         super.onResume()
-        displayStoredArticles()
+        syncArticlesWithFirebase()
     }
 
     private fun setupToolbar() {
@@ -60,14 +70,8 @@ class HomeActivity : AppCompatActivity() {
         val bottomNavigationView: BottomNavigationView = binding.bottomNavigation
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.navigation_home -> {
-                    // Handle home action
-                    true
-                }
-                R.id.navigation_search -> {
-                    // Handle search action
-                    true
-                }
+                R.id.navigation_home -> true
+                R.id.navigation_search -> true
                 R.id.navigation_add -> {
                     val intent = Intent(this, CreateArticleActivity::class.java).apply {
                         putExtra("USER_ID", userId)
@@ -75,30 +79,39 @@ class HomeActivity : AppCompatActivity() {
                     startActivity(intent)
                     true
                 }
-                R.id.navigation_profile -> {
-                    // Handle profile action
-                    true
-                }
+                R.id.navigation_profile -> true
                 else -> false
             }
         }
     }
 
-    private fun insertExampleData() {
-        articleDao.createArticle("1", 1, "Article 1", "Hello world!")
-        articleDao.createArticle("2", 2, "Article 2", "How are you?")
-        articleDao.createArticle("3", 3, "Article 3", "I'm fine thank you!")
+    private fun syncArticlesWithFirebase() {
+
+        articles = articleDao.flushAll();
+        Log.d("SYNC", articles.toString())
+        firebaseRepository.fetchArticles(
+            onSuccess = { a ->
+                articles = a.toMutableList()
+                articleDao.insertArticles(articles)
+                displayStoredArticles()
+            },
+            onFailure = { exception ->
+                Log.d("Articles", "fetch from firebase has failed: $exception")
+            }
+        )
     }
 
     private fun displayStoredArticles() {
         homeScrollView.visibility = View.GONE
         progressBar.visibility = View.VISIBLE
 
+        supportFragmentManager.fragments.forEach { fragment ->
+            supportFragmentManager.beginTransaction().remove(fragment).commit()
+        }
+
         val articles: List<ArticleDataResponse> = articleDao.getAllArticles()
         if (articles.isNotEmpty()) {
             displayArticles(articles)
-        } else {
-            Toast.makeText(this, "No articles found", Toast.LENGTH_SHORT).show()
         }
 
         progressBar.visibility = View.GONE
@@ -106,16 +119,15 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun displayArticles(articles: List<ArticleDataResponse>) {
-        // Clear any existing fragments
         supportFragmentManager.fragments.forEach { fragment ->
             supportFragmentManager.beginTransaction().remove(fragment).commit()
         }
 
         for (article in articles) {
-            val uniqueImageUrl = "https://picsum.photos/200?random=${article.id}"
+            val uniqueImageUrl = "https://picsum.photos/200?random=${article.id}${article.userId}"
             val fragment = ArticleFragment.newInstance(
-                userId = article.userId.toString(),
-                id = article.id.toString(),
+                userId = article.userId,
+                id = article.id,
                 title = article.title,
                 body = article.body,
                 image = uniqueImageUrl,
@@ -125,9 +137,23 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    private fun hideSystemBars() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        val controller = WindowInsetsControllerCompat(window, window.decorView)
+        controller.hide(WindowInsetsCompat.Type.systemBars())
+        controller.hide(WindowInsetsCompat.Type.statusBars())
+        controller.hide(WindowInsetsCompat.Type.navigationBars())
+        controller.hide(WindowInsetsCompat.Type.displayCutout())
+        controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+    }
+
     private fun addFragmentToLayout(fragment: Fragment) {
-        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.article_container, fragment) // Use a container view to add fragments
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.add(R.id.article_container, fragment)
         transaction.commit()
+    }
+
+    override fun onArticleDeleted() {
+        displayStoredArticles()
     }
 }

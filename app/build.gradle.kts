@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -64,4 +65,5 @@ dependencies {
     implementation(libs.androidx.credentials)
     implementation (libs.play.services.auth.v2030)
     implementation (libs.androidx.credentials.v100alpha02)
+    implementation (libs.firebase.database)
 }

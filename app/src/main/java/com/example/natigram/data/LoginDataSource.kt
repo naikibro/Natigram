@@ -1,12 +1,13 @@
 package com.example.natigram.data
 
 import com.example.natigram.data.model.LoggedInUser
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import java.io.IOException
 
-/**
- * Class that handles authentication w/ login credentials and retrieves user information.
- */
 class LoginDataSource {
+
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     companion object {
         private val users = mutableListOf(
@@ -28,22 +29,26 @@ class LoginDataSource {
         }
     }
 
-    fun login(username: String, password: String): Result<LoggedInUser> {
-        return try {
-            val user = users.find { it.username == username && it.password == password }
-            if (user != null) {
-                Result.Success(user.loggedInUser)
-            } else {
-                throw IllegalArgumentException("Invalid username or password")
+    fun login(username: String, password: String, callback: (Result<LoggedInUser>) -> Unit) {
+        auth.signInWithEmailAndPassword(username, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val firebaseUser: FirebaseUser? = auth.currentUser
+                    val user = users.find { it.username == username }
+                    if (user != null) {
+                        callback(Result.Success(user.loggedInUser))
+                    } else {
+                        val newUser = LoggedInUser(firebaseUser?.uid ?: "", firebaseUser?.displayName ?: "")
+                        callback(Result.Success(newUser))
+                    }
+                } else {
+                    callback(Result.Error(IOException("Error logging in", task.exception)))
+                }
             }
-        } catch (e: Throwable) {
-            Result.Error(IOException("Error logging in", e))
-        }
     }
 
     fun logout() {
-        // For now, we just print a message indicating the user has been logged out.
-        // In a real app, you would clear the user's session or token.
+        auth.signOut()
         println("User logged out")
     }
 

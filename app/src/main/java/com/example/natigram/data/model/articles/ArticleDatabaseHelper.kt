@@ -4,6 +4,7 @@ package com.example.natigram.data.model.articles
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 
 class ArticleDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
@@ -28,5 +29,9 @@ class ArticleDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABA
                     "body TEXT)"
 
         private const val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS articles"
+
+        fun deleteArticle(articleId: String) {
+            Log.d("DA", articleId)
+        }
     }
 }

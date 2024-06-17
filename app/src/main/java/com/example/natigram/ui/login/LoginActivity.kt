@@ -1,5 +1,6 @@
 package com.example.natigram.ui.login
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
@@ -15,6 +16,9 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.example.natigram.HomeActivity
 import com.example.natigram.databinding.ActivityLoginBinding
 import com.example.natigram.R
@@ -24,6 +28,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,13 +42,13 @@ class LoginActivity : AppCompatActivity() {
         val autoLogin = binding.autoLogin
         val loginHelper = binding.loginHelper
 
+        hideSystemBars()
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
 
-            // disable login button unless both username / password is valid
             login.isEnabled = loginState.isDataValid
 
             if (loginState.usernameError != null) {
@@ -66,7 +71,6 @@ class LoginActivity : AppCompatActivity() {
             }
             setResult(Activity.RESULT_OK)
 
-            // Ensure the background of the LinearLayout is an AnimationDrawable
             val linearLayout = findViewById<LinearLayout>(R.id.login_container)
             val animationDrawable = linearLayout.background as? AnimationDrawable
 
@@ -76,7 +80,6 @@ class LoginActivity : AppCompatActivity() {
                 start()
             }
 
-            //Complete and destroy login activity once successful
             finish()
         })
 
@@ -112,8 +115,8 @@ class LoginActivity : AppCompatActivity() {
             }
 
             autoLogin.setOnClickListener {
-                username.setText("naikibro@gmail.com")
-                password.setText("naiki")
+                username.setText("naiki@gmail.com")
+                password.setText("naikinaiki")
                 login.performClick()
             }
         }
@@ -145,6 +148,13 @@ class LoginActivity : AppCompatActivity() {
             putExtra("USER_ID", model.userId)  // Pass user ID
         }
         startActivity(intent)
+    }
+
+    private fun hideSystemBars() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        val controller = WindowInsetsControllerCompat(window, window.decorView)
+        controller.hide(WindowInsetsCompat.Type.systemBars())
+        controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {

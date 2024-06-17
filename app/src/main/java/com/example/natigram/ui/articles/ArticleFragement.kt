@@ -1,5 +1,7 @@
 package com.example.natigram.ui.articles
 
+import FirebaseArticleRepository
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,7 +13,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.natigram.R
 import com.example.natigram.data.LoginDataSource
-import com.example.natigram.data.model.articles.ArticleDao
+import com.example.natigram.data.listeners.ArticleDeleteListener
 
 private const val ARG_PARAM1 = "userId"
 private const val ARG_PARAM2 = "id"
@@ -29,6 +31,20 @@ class ArticleFragment : Fragment() {
     private var currentUserId: String? = null
 
     private var isDescriptionShort = true
+    private lateinit var articleRepository: FirebaseArticleRepository
+    private var deleteListener: ArticleDeleteListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is ArticleDeleteListener) {
+            deleteListener = context
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        deleteListener = null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +55,10 @@ class ArticleFragment : Fragment() {
             body = it.getString(ARG_PARAM4)
             image = it.getString(ARG_PARAM5)
             currentUserId = it.getString(ARG_PARAM6)
+        }
+
+        context?.let {
+            articleRepository = FirebaseArticleRepository(it)
         }
     }
 
@@ -92,9 +112,10 @@ class ArticleFragment : Fragment() {
             deleteButton.visibility = View.VISIBLE
             deleteButton.setOnClickListener {
                 id?.let { articleId ->
-                    val articleDao = ArticleDao(requireContext())
-                    articleDao.deleteArticle(articleId.toInt())
-                    activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
+                    userId?.let { it1 ->
+                        articleRepository.flushArticle(articleId, it1)
+                        deleteListener?.onArticleDeleted()
+                    }
                 }
             }
         } else {
@@ -113,8 +134,8 @@ class ArticleFragment : Fragment() {
             body: String,
             image: String,
             currentUserId: String
-        ) =
-            ArticleFragment().apply {
+        ): ArticleFragment {
+            return ArticleFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, userId)
                     putString(ARG_PARAM2, id)
@@ -124,5 +145,6 @@ class ArticleFragment : Fragment() {
                     putString(ARG_PARAM6, currentUserId)
                 }
             }
+        }
     }
 }

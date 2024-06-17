@@ -122,4 +122,5 @@
     <string name="button_signin">Confirm</string>
     <string name="text_welcome">Connect with Google</string>
     <string name="default_web_client_id">454122513628-21t48rikv43hagnk52dej8pc9ei77uv5.apps.googleusercontent.com</string>
+    <string name="logoinsta_1">logoInsta</string>
 </resources>
